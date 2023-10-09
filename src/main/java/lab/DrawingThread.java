@@ -2,6 +2,7 @@ package lab;
 
 
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -13,10 +14,12 @@ public class DrawingThread extends AnimationTimer {
 
 	private final Canvas canvas;
 	private final GraphicsContext gc;
+	private Game game;
 
 	public DrawingThread(Canvas canvas) {
 		this.canvas = canvas;
 		this.gc = canvas.getGraphicsContext2D();
+		this.game = new Game(new Point2D(this.canvas.getWidth(), this.canvas.getHeight()));
 	}
 
 	private static final double SCALING_FACTOR = 70.0;
@@ -31,16 +34,7 @@ public class DrawingThread extends AnimationTimer {
 
 		double UNIT = width / SCALING_FACTOR;
 
-		drawPlayingField(width, height, UNIT);
-		drawScore(width, (int)UNIT);
-
-		// draw players
-		gc.setFill(Color.WHITE);
-		gc.fillRect((int)(width/30.0), (int)(height/4.0), UNIT, 5*UNIT);
-		gc.fillRect((int)(width-width/30.0), (int)(height/2.5), UNIT, 5*UNIT);
-
-		// draw ball
-		drawSquare(width/2 + width/12, height/4, UNIT);
+		this.game.draw(this.gc);
 	}
 
 
